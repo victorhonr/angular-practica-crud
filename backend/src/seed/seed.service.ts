@@ -14,6 +14,6 @@ export class SeedService {
   populateDB() {
     this.carsService.fillSeedData(CARS_SEED);
     this.brandService.fillSeedData(BRANS_SEED);
-    return `Seed executed`;
+    return { message: `Seed executed` };
   }
 }
