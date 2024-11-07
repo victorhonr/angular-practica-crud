@@ -1,0 +1,304 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/cars": {
+      "get": {
+        "operationId": "CarsController_getAllCars",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de coches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Obtener todos los coches",
+        "tags": [
+          "cars"
+        ]
+      },
+      "post": {
+        "operationId": "CarsController_createCar",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCarDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Coche creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error al crear el coche"
+          }
+        },
+        "summary": "Crear un nuevo coche",
+        "tags": [
+          "cars"
+        ]
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "operationId": "CarsController_getCarById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del coche",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coche encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Coche no encontrado"
+          }
+        },
+        "summary": "Obtener un coche por ID",
+        "tags": [
+          "cars"
+        ]
+      },
+      "patch": {
+        "operationId": "CarsController_updateCar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del coche",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coche actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Coche no encontrado"
+          }
+        },
+        "summary": "Actualizar un coche",
+        "tags": [
+          "cars"
+        ]
+      },
+      "delete": {
+        "operationId": "CarsController_deleteCar",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del coche",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Coche eliminado"
+          },
+          "404": {
+            "description": "Coche no encontrado"
+          }
+        },
+        "summary": "Eliminar un coche",
+        "tags": [
+          "cars"
+        ]
+      }
+    },
+    "/seed": {
+      "get": {
+        "operationId": "SeedController_populateDB",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Seed"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "API Proyecto Angular CRUD",
+    "description": "La API para gestionar los endpoints de cars",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CarDetail": {
+        "type": "object",
+        "properties": {
+          "registrationDate": {
+            "type": "string",
+            "description": "Fecha de registro del coche"
+          },
+          "mileage": {
+            "type": "number",
+            "description": "Kilometraje del coche"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Moneda del precio"
+          },
+          "price": {
+            "type": "number",
+            "description": "Precio del coche"
+          }
+        },
+        "required": [
+          "registrationDate",
+          "mileage",
+          "currency",
+          "price"
+        ]
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID del coche"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Marca del coche"
+          },
+          "model": {
+            "type": "string",
+            "description": "Modelo del coche"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total del coche (opcional)"
+          },
+          "carDetails": {
+            "description": "Detalles del coche",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetail"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "brand",
+          "model",
+          "carDetails"
+        ]
+      },
+      "CarDetailsDto": {
+        "type": "object",
+        "properties": {
+          "registrationDate": {
+            "type": "string",
+            "description": "Fecha de registro del coche",
+            "example": "2024-11-01"
+          },
+          "mileage": {
+            "type": "number",
+            "description": "Kilometraje del coche",
+            "example": 15000
+          },
+          "currency": {
+            "type": "string",
+            "description": "Moneda del precio",
+            "example": "USD"
+          },
+          "price": {
+            "type": "number",
+            "description": "Precio del coche",
+            "example": 20000
+          }
+        },
+        "required": [
+          "registrationDate",
+          "mileage",
+          "currency",
+          "price"
+        ]
+      },
+      "CreateCarDto": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Marca del coche",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Modelo del coche",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "carDetails": {
+            "description": "Detalles del coche",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsDto"
+            }
+          }
+        },
+        "required": [
+          "brand",
+          "model",
+          "carDetails"
+        ]
+      }
+    }
+  }
+}
