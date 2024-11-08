@@ -11,7 +11,7 @@ import {
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto';
-import { Car } from './interfaces/car.interface';
+import { Car } from './dto/car.dto';
 
 @ApiTags('cars') // Añadimos un tag para agrupar todas las rutas relacionadas con coches
 @Controller('cars')

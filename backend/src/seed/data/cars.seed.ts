@@ -1,4 +1,4 @@
-import { Car } from 'src/cars/interfaces/car.interface';
+import { Car } from 'src/cars/dto/car.dto';
 import { v4 as uuid } from 'uuid';
 
 export const CARS_SEED: Car[] = [

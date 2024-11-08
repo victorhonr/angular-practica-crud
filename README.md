@@ -77,10 +77,11 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 
 ### **Práctica 1: Configuración Inicial**
 
-1. Proteger la rama main para que no se pueda realizar commits directamente, solo a partir de Pull Request.
-2. Crear una rama `feature/initial-project` para configurar los proyectos y lanzar una Pull Request.
-3. Configurar Tailwind CSS en el frontend siguiendo la [guía oficial](https://tailwindcss.com/docs/guides/angular).
-4. Configurar Prettier, ESLint y Husky en el frontend.
+1. Hacer un fork del repositorio.
+2. Proteger la rama main para que no se pueda realizar commits directamente, solo a partir de Pull Request.
+3. Crear una rama `feature/initial-project` para configurar los proyectos y lanzar una Pull Request.
+4. Si elegiste Tailwind CSS en el frontend sigue la [guía oficial](https://tailwindcss.com/docs/guides/angular).
+5. Configurar Prettier, ESLint y Husky en el frontend.
 
 ---
 
@@ -89,14 +90,14 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 1. Crear una nueva rama `feature/home-page`.
 2. Crear el componente inicial `HomeComponent` y configurarlo como la ruta inicial.
 3. Dentro del `HomeComponent`, crear un componente `CrudTableComponent` con la siguiente estructura:
-   - **Campo ID**
+   - **Campo ID**. Al clicar en el link debemos ir a la vista de detalle.
    - **Campo Marca**
    - **Campo Modelo**
    - **Campo Total**
    - **Campo Acciones**:
-     - Ver: Abre una vista de detalle.
-     - Crear/Editar: Abre una vista con un formulario.
+     - Editar: Abre una vista con un formulario.
      - Eliminar: Muestra una ventana modal de confirmación.
+   - **Botón en la parte superior** abre la vista de Creación.
 4. Subir los cambios y abrir una Pull Request.
 
 ---
@@ -111,7 +112,8 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
    - `updateCar`: Llama al endpoint `PATCH /cars/:id`.
    - `deleteCar`: Llama al endpoint `DELETE /cars/:id`.
 3. Actualizar el componente `CrudTableComponent` para obtener los datos del servicio y mostrarlos en la tabla.
-4. Subir los cambios y abrir una Pull Request.
+4. Ten en cuenta el [swagger](http://localhost:3000/api-docs/) que tenemos a la hora de validar los datos antes de enviarlo al backend.
+5. Subir los cambios y abrir una Pull Request.
 
 ---
 
@@ -119,17 +121,27 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 
 1. Crear una nueva rama `feature/car-details`.
 2. **Pantalla de Detalle**:
+
    - Crear un componente `CarDetailsComponent`.
    - Configurar una ruta dinámica como `cars/:id`.
-   - Mostrar los datos del item obtenidos del backend en formato de solo lectura.
+   - Mostrar los datos del coche obtenidos del backend en formato de solo lectura.
+   - Cuando se muestre el campo mileage usaremos un pipe para ver 2 decimales máximos.
+   - Crear un pipe personalizado, y junto al campo de mileage controlaremos 3 estados: Nuevo / Kilómetro 0 / Ocasión.
+
+     - Si el mileage es 0, mostraremos un tag verde que ponga "Nuevo"
+     - Si es mileage menor a 100km, mostraremos un tag azul que ponga "Km 0"
+     - El resto, mostraremos un tag amarillo que ponga "Ocasión"
+
+   - Cuando se muestre el campo de price usaremos el pipe currency (junto a la propiedad currency).
+
 3. **Pantalla de Edición**:
-   - Crear un componente `ItemEditComponent`.
+   - Crear un componente `CarEditComponent`.
    - Configurar una ruta dinámica como `cars/:id/edit`.
    - Usar un formulario reactivo con datos precargados del backend.
 4. **Pantalla de Creación**:
-   - Crear un componente `ItemCreateComponent`.
+   - Crear un componente `CarCreateComponent`.
    - Configurar una ruta como `cars/new`.
-   - Implementar un formulario reactivo para crear nuevos cars.
+   - Implementar un formulario reactivo para crear nuevos coches (se necesitará el uso de FormArray para el carDetails).
 5. Subir los cambios y abrir una Pull Request.
 
 ---

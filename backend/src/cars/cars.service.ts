@@ -6,7 +6,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 import { CreateCarDto } from './dto';
-import { Car } from './interfaces/car.interface';
+import { Car } from './dto/car.dto';
 
 @Injectable()
 export class CarsService {
