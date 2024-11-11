@@ -54,7 +54,7 @@ Una vez ambos servicios estén levantados, puedes acceder al proyecto desde tu n
 
 #### Objetivo:
 
-Desarrollar una aplicación web utilizando **Angular** (preferiblemente la última versión disponible) con funcionalidades CRUD (Crear, Leer, Actualizar, Eliminar) usando **Nest.js** como backend.
+Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD (Crear, Leer, Actualizar, Eliminar) usando **Nest.js** como backend.
 
 #### Requerimientos del Proyecto:
 
@@ -62,6 +62,8 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 
    - Configurar **Prettier** para formateo automático del código.
    - Configurar **ESLint** para análisis estático de código.
+   - Configurar **Karma** para que sea necesario un 80% de code coverage.
+   - Configurar **GitHub** para aplicar una template a la hora de realizar las pull request.
    - Configurar **Husky** para hooks pre-commit que aseguren que el código está bien formateado y cumple con las reglas establecidas.
    - Seguir el flujo de trabajo **GitFlow** para la gestión de ramas y commits.
 
@@ -90,15 +92,21 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 1. Crear una nueva rama `feature/home-page`.
 2. Crear el componente inicial `HomeComponent` y configurarlo como la ruta inicial.
 3. Dentro del `HomeComponent`, crear un componente `CrudTableComponent` con la siguiente estructura:
+
+   - **Botón en la parte superior** abre la vista de Creación.
    - **Campo ID**. Será un link que redirige a la vista de detalle.
    - **Campo Marca**
    - **Campo Modelo**
-   - **Campo Total**. En el caso de haber 0 en el total. Mostrar un texto en rojo que ponga "Sin stock".
+   - **Campo Total**. En el caso de haber 0 en el total. Mostrar un texto en rojo que ponga "Sin stock" en lugar de mostrar el 0.
    - **Campo Acciones**:
-   - Utilizar un menu contextual para mostrar las opciones o dos botones.
-     - Editar: Abre una vista con un formulario.
-     - Eliminar: Muestra una ventana modal de confirmación.
-   - **Botón en la parte superior** abre la vista de Creación.
+
+     - Utilizar un menu contextual para mostrar las opciones o dos botones.
+
+       > Editar: Abre una vista con un formulario.
+       > &nbsp;
+
+       > Eliminar: Muestra una ventana modal de confirmación.
+
 4. Subir los cambios y abrir una Pull Request.
 
 ---
@@ -110,13 +118,14 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
    - `getCars`: Llama al endpoint `GET /cars`.
    - `getCarById`: Llama al endpoint `GET /cars/:id`.
    - `createCar`: Llama al endpoint `POST /cars`.
-   - `updateCar`: Llama al endpoint `PATCH /cars/:id`.
+   - `updateCar`: Llama al endpoint `PUT /cars/:id`.
    - `deleteCar`: Llama al endpoint `DELETE /cars/:id`.
+3. Configurar en el frontend un servicio Angular (`BrandsService`) para manejar las peticiones al backend:
    - `getBrands`: Llama al endpoint `GET /brands`.
    - `getModelByBrand`: Llama al endpoint `GET /cars/:brandId`.
-3. Actualizar el componente `CrudTableComponent` para obtener los datos del servicio y mostrarlos en la tabla.
-4. Ten en cuenta el [swagger](http://localhost:3000/api-docs/) que tenemos a la hora de validar los datos antes de enviarlo al backend.
-5. Subir los cambios y abrir una Pull Request.
+4. Actualizar el componente `CrudTableComponent` para obtener los datos de los servicios y mostrarlos en la tabla.
+5. Ten en cuenta el [swagger](http://localhost:3000/api-docs/) que tenemos a la hora de validar los datos antes de enviarlo al backend.
+6. Subir los cambios y abrir una Pull Request.
 
 ---
 
@@ -169,7 +178,18 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 
 ---
 
-### **Práctica 6: Manejo de Errores y Mensajes**
+### **Práctica 6: Implementar breadcrumb para la navegación**
+
+1. Crear una nueva rama `feature/breadcrumb`.
+2. Crear un componente breadcrumb que reciba:
+   - url.
+   - label.
+3. Manejar la funcionalidad de la navegación.
+4. Subir los cambios y abrir una Pull Request.
+
+---
+
+### **Práctica 7: Manejo de Errores y Mensajes**
 
 1. Crear una nueva rama `feature/error-handling`.
 2. Crear un servicio Angular para mostrar notificaciones (toasts):
@@ -180,7 +200,7 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 
 ---
 
-### **Práctica 7: Finalización y Documentación**
+### **Práctica 8: Finalización y Documentación**
 
 1. Crear una nueva rama `feature/documentation`.
 2. Crear un archivo `CONTRIBUTING.md` con normas de contribución:
@@ -192,3 +212,7 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 ---
 
 ### Si lo consideras necesario, puedes instalar el CDK de Angular para la utilización de los modales y el menú contextual.
+
+### Se trata de un proyecto en versión 18, por lo que se valorará la elección de las últimas funcionalidades (template flow, signals, etc).
+
+### Es requisito obligatorio un 80% de code coverage en el proyecto para poder entregarlo.
