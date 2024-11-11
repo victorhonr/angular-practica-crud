@@ -5,12 +5,12 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CarsService } from './cars.service';
-import { CreateCarDto, UpdateCarDto } from './dto';
+import { CreateCarDto } from './dto';
 import { Car } from './entities';
 
 @ApiTags('cars') // Tag to group all routes related to cars
@@ -42,16 +42,16 @@ export class CarsController {
     return this.carsService.create(createCarDto);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({ summary: 'Update a car' })
   @ApiParam({ name: 'id', type: String, description: 'Car ID' })
   @ApiResponse({ status: 200, description: 'Car updated', type: Car })
   @ApiResponse({ status: 404, description: 'Car not found' })
   updateCar(
-    @Body() updateCarDto: UpdateCarDto,
+    @Body() carToUpdate: CreateCarDto,
     @Param('id', ParseUUIDPipe) id: string,
   ): Car {
-    return this.carsService.update(id, updateCarDto);
+    return this.carsService.update(id, carToUpdate);
   }
 
   @Delete(':id')

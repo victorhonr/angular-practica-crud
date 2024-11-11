@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { carsDB, modelsDB } from './data/brand.data';
+import { brandsDB, modelsDB } from './data/brand.data';
 import { BrandDto, ModelDto } from './dto';
 
 @Injectable()
 export class BrandsService {
   // Local in-memory data for brands and models
-  cars: BrandDto[] = carsDB;
+  brands: BrandDto[] = brandsDB;
   models = modelsDB;
 
   /**
@@ -13,7 +13,7 @@ export class BrandsService {
    * @returns An array of all car brands.
    */
   getAllBrands(): BrandDto[] {
-    return this.cars;
+    return this.brands;
   }
 
   /**

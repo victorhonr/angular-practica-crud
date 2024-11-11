@@ -93,7 +93,7 @@
           "cars"
         ]
       },
-      "patch": {
+      "put": {
         "operationId": "CarsController_updateCar",
         "parameters": [
           {
@@ -111,7 +111,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCarDto"
+                "$ref": "#/components/schemas/CreateCarDto"
               }
             }
           }
@@ -368,30 +368,6 @@
           "model",
           "carDetails"
         ]
-      },
-      "UpdateCarDto": {
-        "type": "object",
-        "properties": {
-          "brand": {
-            "type": "string",
-            "description": "Car brand",
-            "maxLength": 50,
-            "example": "Toyota"
-          },
-          "model": {
-            "type": "string",
-            "description": "Car model",
-            "maxLength": 50,
-            "example": "Corolla"
-          },
-          "carDetails": {
-            "description": "Car details",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CarDetailsDto"
-            }
-          }
-        }
       },
       "BrandDto": {
         "type": "object",

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
-import { CarDetailsDto, CreateCarDto, UpdateCarDto } from './dto';
+import { CarDetailsDto, CreateCarDto } from './dto';
 import { Car } from './entities';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class CarsService {
   findOne(id: string): Car {
     const car = this.cars.find((car) => car.id === id);
     if (!car) throw new NotFoundException(`Car with id ${id} not found`);
-    return { ...car, total: car.carDetails.length };
+    return { ...car, total: car.carDetails.length || 0 };
   }
 
   /**
@@ -43,13 +43,11 @@ export class CarsService {
    * @returns The newly created car object.
    */
   create(createCarDto: CreateCarDto): Car {
-    if (createCarDto.carDetails) {
-      this.validateCarDetails(
-        createCarDto.carDetails,
-        createCarDto.brand,
-        createCarDto.model,
-      );
-    }
+    this.validateCarDetails(
+      createCarDto.carDetails,
+      createCarDto.brand,
+      createCarDto.model,
+    );
 
     const newCar: Car = {
       ...createCarDto,
@@ -75,23 +73,21 @@ export class CarsService {
   /**
    * Updates a car with the provided ID and new data.
    * @param id - The ID of the car to update.
-   * @param updateCarDto - The DTO containing the new data for the car.
+   * @param carToUpdate - The DTO containing the new data for the car.
    * @returns The updated car object.
    * @throws NotFoundException if the car with the given ID does not exist.
    */
-  update(id: string, updateCarDto: UpdateCarDto): Car {
+  update(id: string, carToUpdate: CreateCarDto): Car {
     const carDB = this.findOne(id);
 
-    if (updateCarDto.carDetails) {
-      this.validateCarDetails(
-        updateCarDto.carDetails,
-        updateCarDto.brand,
-        updateCarDto.model,
-        id,
-      );
-    }
+    this.validateCarDetails(
+      carToUpdate.carDetails,
+      carToUpdate.brand,
+      carToUpdate.model,
+      id,
+    );
 
-    const updatedCar = { ...carDB, ...updateCarDto, id };
+    const updatedCar = { ...carDB, ...carToUpdate, id };
     const carIndex = this.cars.findIndex((car) => car.id === id);
     this.cars[carIndex] = updatedCar;
 
@@ -116,12 +112,12 @@ export class CarsService {
    * @throws BadRequestException if the manufacture year is later than the registration date.
    */
   private validateCarDetails(
-    carDetails: CarDetailsDto[],
+    carDetails: CarDetailsDto[] | undefined,
     brand: string,
     model: string,
     id?: string,
   ): void {
-    carDetails.forEach((detail) => {
+    carDetails?.forEach((detail) => {
       this.validateDuplicateCar(brand, model, id);
       this.validateDuplicateLicensePlate(detail.licensePlate, id);
       this.validateManufactureYear(

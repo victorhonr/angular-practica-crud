@@ -1,6 +1,6 @@
 import { BrandDto, ModelDto } from '../dto';
 
-export const carsDB: BrandDto[] = [
+export const brandsDB: BrandDto[] = [
   { code: 'TOYOTA', value: 'Toyota' },
   { code: 'FORD', value: 'Ford' },
   { code: 'HONDA', value: 'Honda' },
