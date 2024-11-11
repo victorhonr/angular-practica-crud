@@ -90,11 +90,12 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 1. Crear una nueva rama `feature/home-page`.
 2. Crear el componente inicial `HomeComponent` y configurarlo como la ruta inicial.
 3. Dentro del `HomeComponent`, crear un componente `CrudTableComponent` con la siguiente estructura:
-   - **Campo ID**. Al clicar en el link debemos ir a la vista de detalle.
+   - **Campo ID**. Será un link que redirige a la vista de detalle.
    - **Campo Marca**
    - **Campo Modelo**
-   - **Campo Total**
+   - **Campo Total**. En el caso de haber 0 en el total. Mostrar un texto en rojo que ponga "Sin stock".
    - **Campo Acciones**:
+   - Utilizar un menu contextual para mostrar las opciones o dos botones.
      - Editar: Abre una vista con un formulario.
      - Eliminar: Muestra una ventana modal de confirmación.
    - **Botón en la parte superior** abre la vista de Creación.
@@ -111,6 +112,8 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
    - `createCar`: Llama al endpoint `POST /cars`.
    - `updateCar`: Llama al endpoint `PATCH /cars/:id`.
    - `deleteCar`: Llama al endpoint `DELETE /cars/:id`.
+   - `getBrands`: Llama al endpoint `GET /brands`.
+   - `getModelByBrand`: Llama al endpoint `GET /cars/:brandId`.
 3. Actualizar el componente `CrudTableComponent` para obtener los datos del servicio y mostrarlos en la tabla.
 4. Ten en cuenta el [swagger](http://localhost:3000/api-docs/) que tenemos a la hora de validar los datos antes de enviarlo al backend.
 5. Subir los cambios y abrir una Pull Request.
@@ -134,15 +137,22 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 
    - Cuando se muestre el campo de price usaremos el pipe currency (junto a la propiedad currency).
 
-3. **Pantalla de Edición**:
-   - Crear un componente `CarEditComponent`.
-   - Configurar una ruta dinámica como `cars/:id/edit`.
-   - Usar un formulario reactivo con datos precargados del backend.
-4. **Pantalla de Creación**:
+3. **Pantalla de Creación**:
    - Crear un componente `CarCreateComponent`.
    - Configurar una ruta como `cars/new`.
    - Implementar un formulario reactivo para crear nuevos coches (se necesitará el uso de FormArray para el carDetails).
-5. Subir los cambios y abrir una Pull Request.
+   - Para las brands y model deberás rellenar la información con sus endpoint correspondientes
+4. **Pantalla de Edición**:
+   - Crear un componente `CarEditComponent`.
+   - Configurar una ruta dinámica como `cars/:id/edit`.
+   - Usar un formulario reactivo con datos precargados del backend.
+5. **Debes tener en cuenta todas las validaciones del backend**:
+   - manufactureYear debe ser como máximo en el año actual.
+   - registrationDate no puede ser anterior a manufactureYear.
+   - Respetar el formato de licensePlate.
+   - Respetar los valores posibles de currency.
+   - No olvides revisar el swagger para comprobar el resto de validaciones.
+6. Subir los cambios y abrir una Pull Request.
 
 ---
 
@@ -180,3 +190,5 @@ Desarrollar una aplicación web utilizando **Angular** (preferiblemente la últi
 3. Subir los cambios y abrir una Pull Request.
 
 ---
+
+### Si lo consideras necesario, puedes instalar el CDK de Angular para la utilización de los modales y el menú contextual.
