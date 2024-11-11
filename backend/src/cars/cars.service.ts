@@ -7,7 +7,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 import { CarDetailsDto, CreateCarDto } from './dto';
-import { Car } from './entities';
+import { Car, CarSummary } from './entities';
 
 @Injectable()
 export class CarsService {
@@ -18,11 +18,14 @@ export class CarsService {
    * Retrieves all cars, with the added property 'total' which is the count of carDetails.
    * @returns A list of all cars with the total car details count.
    */
-  findAll(): Car[] {
-    return this.cars.map((car) => ({
-      ...car,
-      total: car.carDetails?.length || 0,
-    }));
+  findAll(): CarSummary[] {
+    return this.cars.map((car) => {
+      const { carDetails, ...carWithoutDetails } = car;
+      return {
+        ...carWithoutDetails,
+        total: carDetails?.length || 0,
+      };
+    });
   }
 
   /**

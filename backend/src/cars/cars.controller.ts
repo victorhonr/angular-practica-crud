@@ -11,7 +11,7 @@ import {
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto';
-import { Car } from './entities';
+import { Car, CarSummary } from './entities';
 
 @ApiTags('cars') // Tag to group all routes related to cars
 @Controller('cars')
@@ -20,8 +20,8 @@ export class CarsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all cars' })
-  @ApiResponse({ status: 200, description: 'List of cars', type: [Car] })
-  getAllCars(): Car[] {
+  @ApiResponse({ status: 200, description: 'List of cars', type: [CarSummary] })
+  getAllCars(): CarSummary[] {
     return this.carsService.findAll();
   }
 

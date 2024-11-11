@@ -13,7 +13,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Car"
+                    "$ref": "#/components/schemas/CarSummary"
                   }
                 }
               }
@@ -252,6 +252,37 @@
   "servers": [],
   "components": {
     "schemas": {
+      "CarSummary": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Car model",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "id": {
+            "type": "string",
+            "description": "Car ID"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of cars"
+          }
+        },
+        "required": [
+          "brand",
+          "model",
+          "id",
+          "total"
+        ]
+      },
       "CarDetailsDto": {
         "type": "object",
         "properties": {

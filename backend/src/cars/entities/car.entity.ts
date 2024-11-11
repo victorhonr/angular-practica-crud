@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { CreateCarDto } from '../dto';
 
 export class Car extends CreateCarDto {
@@ -11,3 +11,5 @@ export class Car extends CreateCarDto {
   })
   total: number;
 }
+
+export class CarSummary extends OmitType(Car, ['carDetails'] as const) {}
