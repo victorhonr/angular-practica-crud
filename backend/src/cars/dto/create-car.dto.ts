@@ -2,59 +2,117 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsDateString,
+  IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
+  IsPositive,
   IsString,
+  Matches,
+  Max,
   MaxLength,
+  Min,
+  Validate,
   ValidateNested,
 } from 'class-validator';
+import { ISO_CURRENCIES_CODE } from '../data/iso-currencies.data';
+import { IsBeforeConstraint } from '../validators/isBefore.validator';
+import { IsValidYearConstraint } from '../validators/isValidYear.validator';
+
+const licensePlateRegex = /^[0-9]{4}\s?[A-Z]{3}$/;
 
 export class CarDetailsDto {
   @ApiProperty({
-    description: 'Fecha de registro del coche',
+    description: 'Car registration date',
     type: String,
-    example: '2024-11-01',
+    example: '2024-10-30T10:01:35.288Z',
   })
   @IsDateString({
     strictSeparator: true,
     strict: true,
   })
   @IsNotEmpty()
+  @Validate(IsBeforeConstraint)
+  @Validate(IsValidYearConstraint, {
+    message: 'Car registration year must be greater than or equal to 1900',
+  })
   registrationDate: string;
 
   @ApiProperty({
-    description: 'Kilometraje del coche',
+    description: 'Car mileage',
     type: Number,
     example: 15000,
   })
   @IsNumber()
+  @Min(0)
   @IsNotEmpty()
   mileage: number;
 
   @ApiProperty({
-    description: 'Moneda del precio',
+    description: 'Currency of the price',
     type: String,
     example: 'USD',
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(3)
+  @IsIn(ISO_CURRENCIES_CODE, {
+    message: `Currency must be a valid ISO 4217 code from the supported list: ${ISO_CURRENCIES_CODE}`,
+  })
   currency: string;
 
   @ApiProperty({
-    description: 'Precio del coche',
+    description: 'Price of the car',
     type: Number,
     example: 20000,
   })
   @IsNumber()
+  @IsPositive()
   @IsNotEmpty()
   price: number;
+
+  @ApiProperty({
+    description: 'Year of manufacture of the car',
+    type: Number,
+    example: 2020,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(1900, {
+    message: 'Manufacture year must be greater than or equal to 1900',
+  })
+  @Max(new Date().getFullYear(), {
+    message: `Manufacture year cannot be greater than the current year`,
+  })
+  manufactureYear: number;
+
+  @ApiProperty({
+    description: 'Indicates if the car is available for sale',
+    type: Boolean,
+    example: true,
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  availability: boolean;
+
+  @ApiProperty({
+    description: 'Car license plate',
+    type: String,
+    example: '1234 ABC',
+  })
+  @IsString()
+  @Matches(licensePlateRegex, {
+    message:
+      'Car license plate must be a valid Spanish license plate, e.g. 1234 ABC.',
+  })
+  @IsNotEmpty()
+  readonly licensePlate: string;
 }
 
 export class CreateCarDto {
   @ApiProperty({
-    description: 'Marca del coche',
+    description: 'Car brand',
     type: String,
     maxLength: 50,
     example: 'Toyota',
@@ -65,7 +123,7 @@ export class CreateCarDto {
   readonly brand: string;
 
   @ApiProperty({
-    description: 'Modelo del coche',
+    description: 'Car model',
     type: String,
     maxLength: 50,
     example: 'Corolla',
@@ -76,11 +134,12 @@ export class CreateCarDto {
   readonly model: string;
 
   @ApiProperty({
-    description: 'Detalles del coche',
+    description: 'Car details',
     type: [CarDetailsDto],
   })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CarDetailsDto)
-  readonly carDetails: CarDetailsDto[];
+  @IsOptional()
+  readonly carDetails?: CarDetailsDto[];
 }

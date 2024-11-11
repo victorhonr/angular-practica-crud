@@ -7,7 +7,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Lista de coches",
+            "description": "List of cars",
             "content": {
               "application/json": {
                 "schema": {
@@ -20,7 +20,7 @@
             }
           }
         },
-        "summary": "Obtener todos los coches",
+        "summary": "Get all cars",
         "tags": [
           "cars"
         ]
@@ -40,7 +40,7 @@
         },
         "responses": {
           "201": {
-            "description": "Coche creado",
+            "description": "Car created",
             "content": {
               "application/json": {
                 "schema": {
@@ -50,10 +50,10 @@
             }
           },
           "400": {
-            "description": "Error al crear el coche"
+            "description": "Error creating car"
           }
         },
-        "summary": "Crear un nuevo coche",
+        "summary": "Create a new car",
         "tags": [
           "cars"
         ]
@@ -67,7 +67,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "ID del coche",
+            "description": "Car ID",
             "schema": {
               "type": "string"
             }
@@ -75,7 +75,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Coche encontrado",
+            "description": "Car found",
             "content": {
               "application/json": {
                 "schema": {
@@ -85,10 +85,10 @@
             }
           },
           "404": {
-            "description": "Coche no encontrado"
+            "description": "Car not found"
           }
         },
-        "summary": "Obtener un coche por ID",
+        "summary": "Get a car by ID",
         "tags": [
           "cars"
         ]
@@ -100,15 +100,25 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "ID del coche",
+            "description": "Car ID",
             "schema": {
               "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCarDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Coche actualizado",
+            "description": "Car updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,10 +128,10 @@
             }
           },
           "404": {
-            "description": "Coche no encontrado"
+            "description": "Car not found"
           }
         },
-        "summary": "Actualizar un coche",
+        "summary": "Update a car",
         "tags": [
           "cars"
         ]
@@ -133,7 +143,7 @@
             "name": "id",
             "required": true,
             "in": "path",
-            "description": "ID del coche",
+            "description": "Car ID",
             "schema": {
               "type": "string"
             }
@@ -141,13 +151,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Coche eliminado"
+            "description": "Car deleted"
           },
           "404": {
-            "description": "Coche no encontrado"
+            "description": "Car not found"
           }
         },
-        "summary": "Eliminar un coche",
+        "summary": "Delete a car",
         "tags": [
           "cars"
         ]
@@ -155,22 +165,86 @@
     },
     "/seed": {
       "get": {
+        "description": "Triggers the seeding of the database with predefined data.",
         "operationId": "SeedController_populateDB",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Database populated successfully"
+          },
+          "500": {
+            "description": "Error while populating the database"
           }
         },
+        "summary": "Populate the database with initial data",
         "tags": [
-          "Seed"
+          "seed"
+        ]
+      }
+    },
+    "/brands": {
+      "get": {
+        "operationId": "BrandsController_getAllBrands",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of car brands",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BrandDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all car brands",
+        "tags": [
+          "brands"
+        ]
+      }
+    },
+    "/brands/{brandId}/models": {
+      "get": {
+        "operationId": "BrandsController_getModelsByBrand",
+        "parameters": [
+          {
+            "name": "brandId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of models for the specified brand",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get models by car brand",
+        "tags": [
+          "brands"
         ]
       }
     }
   },
   "info": {
-    "title": "API Proyecto Angular CRUD",
-    "description": "La API para gestionar los endpoints de cars",
+    "title": "Angular CRUD Project API",
+    "description": "API for managing car and brand endpoints",
     "version": "1.0",
     "contact": {}
   },
@@ -178,96 +252,92 @@
   "servers": [],
   "components": {
     "schemas": {
-      "CarDetail": {
-        "type": "object",
-        "properties": {
-          "registrationDate": {
-            "type": "string",
-            "description": "Fecha de registro del coche"
-          },
-          "mileage": {
-            "type": "number",
-            "description": "Kilometraje del coche"
-          },
-          "currency": {
-            "type": "string",
-            "description": "Moneda del precio"
-          },
-          "price": {
-            "type": "number",
-            "description": "Precio del coche"
-          }
-        },
-        "required": [
-          "registrationDate",
-          "mileage",
-          "currency",
-          "price"
-        ]
-      },
-      "Car": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID del coche"
-          },
-          "brand": {
-            "type": "string",
-            "description": "Marca del coche"
-          },
-          "model": {
-            "type": "string",
-            "description": "Modelo del coche"
-          },
-          "total": {
-            "type": "number",
-            "description": "Total del coche (opcional)"
-          },
-          "carDetails": {
-            "description": "Detalles del coche",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CarDetail"
-            }
-          }
-        },
-        "required": [
-          "id",
-          "brand",
-          "model",
-          "carDetails"
-        ]
-      },
       "CarDetailsDto": {
         "type": "object",
         "properties": {
           "registrationDate": {
             "type": "string",
-            "description": "Fecha de registro del coche",
-            "example": "2024-11-01"
+            "description": "Car registration date",
+            "example": "2024-10-30T10:01:35.288Z"
           },
           "mileage": {
             "type": "number",
-            "description": "Kilometraje del coche",
+            "description": "Car mileage",
             "example": 15000
           },
           "currency": {
             "type": "string",
-            "description": "Moneda del precio",
+            "description": "Currency of the price",
             "example": "USD"
           },
           "price": {
             "type": "number",
-            "description": "Precio del coche",
+            "description": "Price of the car",
             "example": 20000
+          },
+          "manufactureYear": {
+            "type": "number",
+            "description": "Year of manufacture of the car",
+            "example": 2020
+          },
+          "availability": {
+            "type": "boolean",
+            "description": "Indicates if the car is available for sale",
+            "example": true
+          },
+          "licensePlate": {
+            "type": "string",
+            "description": "Car license plate",
+            "example": "1234 ABC"
           }
         },
         "required": [
           "registrationDate",
           "mileage",
           "currency",
-          "price"
+          "price",
+          "manufactureYear",
+          "availability",
+          "licensePlate"
+        ]
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Car model",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "carDetails": {
+            "description": "Car details",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsDto"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "Car ID"
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of cars"
+          }
+        },
+        "required": [
+          "brand",
+          "model",
+          "carDetails",
+          "id",
+          "total"
         ]
       },
       "CreateCarDto": {
@@ -275,18 +345,18 @@
         "properties": {
           "brand": {
             "type": "string",
-            "description": "Marca del coche",
+            "description": "Car brand",
             "maxLength": 50,
             "example": "Toyota"
           },
           "model": {
             "type": "string",
-            "description": "Modelo del coche",
+            "description": "Car model",
             "maxLength": 50,
             "example": "Corolla"
           },
           "carDetails": {
-            "description": "Detalles del coche",
+            "description": "Car details",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CarDetailsDto"
@@ -297,6 +367,68 @@
           "brand",
           "model",
           "carDetails"
+        ]
+      },
+      "UpdateCarDto": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "maxLength": 50,
+            "example": "Toyota"
+          },
+          "model": {
+            "type": "string",
+            "description": "Car model",
+            "maxLength": 50,
+            "example": "Corolla"
+          },
+          "carDetails": {
+            "description": "Car details",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarDetailsDto"
+            }
+          }
+        }
+      },
+      "BrandDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Car brand code",
+            "example": "TOYOTA"
+          },
+          "value": {
+            "type": "string",
+            "description": "Car brand name",
+            "example": "Toyota"
+          }
+        },
+        "required": [
+          "code",
+          "value"
+        ]
+      },
+      "ModelDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Car model code",
+            "example": "COROLLA"
+          },
+          "value": {
+            "type": "string",
+            "description": "Car model name",
+            "example": "Corolla"
+          }
+        },
+        "required": [
+          "code",
+          "value"
         ]
       }
     }

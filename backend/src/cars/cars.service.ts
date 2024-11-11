@@ -1,46 +1,95 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
-import { CreateCarDto } from './dto';
-import { Car } from './dto/car.dto';
+import { CarDetailsDto, CreateCarDto, UpdateCarDto } from './dto';
+import { Car } from './entities';
 
 @Injectable()
 export class CarsService {
+  // In-memory storage for cars
   private cars: Car[] = [];
 
-  findAll() {
+  /**
+   * Retrieves all cars, with the added property 'total' which is the count of carDetails.
+   * @returns A list of all cars with the total car details count.
+   */
+  findAll(): Car[] {
     return this.cars.map((car) => ({
       ...car,
-      total: car.carDetails.length,
+      total: car.carDetails?.length || 0,
     }));
   }
 
-  findOne(id: string) {
+  /**
+   * Finds a car by its ID.
+   * @param id - The unique identifier of the car.
+   * @returns The car object with its details and the total count of car details.
+   * @throws NotFoundException if the car with the given ID does not exist.
+   */
+  findOne(id: string): Car {
     const car = this.cars.find((car) => car.id === id);
     if (!car) throw new NotFoundException(`Car with id ${id} not found`);
     return { ...car, total: car.carDetails.length };
   }
 
+  /**
+   * Creates a new car using the provided car data.
+   * @param createCarDto - The DTO containing the car data to create a new car.
+   * @returns The newly created car object.
+   */
   create(createCarDto: CreateCarDto): Car {
-    this.ensureNoDuplicate(createCarDto.brand, createCarDto.model);
-    const newCar: Car = { ...createCarDto, id: uuid() };
+    if (createCarDto.carDetails) {
+      this.validateCarDetails(
+        createCarDto.carDetails,
+        createCarDto.brand,
+        createCarDto.model,
+      );
+    }
+
+    const newCar: Car = {
+      ...createCarDto,
+      id: uuid(), // Generates a unique ID for the new car
+      total: this.cars.length + 1, // Set the total car details
+    };
     this.cars.push(newCar);
     return newCar;
   }
 
+  /**
+   * Removes a car from the list by its ID.
+   * @param id - The unique identifier of the car to be removed.
+   * @returns The car that was removed.
+   * @throws NotFoundException if the car with the given ID does not exist.
+   */
   remove(id: string): Car {
     const carToDelete = this.findOne(id);
     this.cars = this.cars.filter((car) => car.id !== id);
     return carToDelete;
   }
 
-  update(id: string, updateCarDto: Partial<Car>): Car {
+  /**
+   * Updates a car with the provided ID and new data.
+   * @param id - The ID of the car to update.
+   * @param updateCarDto - The DTO containing the new data for the car.
+   * @returns The updated car object.
+   * @throws NotFoundException if the car with the given ID does not exist.
+   */
+  update(id: string, updateCarDto: UpdateCarDto): Car {
     const carDB = this.findOne(id);
-    this.ensureNoDuplicate(updateCarDto.brand, updateCarDto.model, id);
+
+    if (updateCarDto.carDetails) {
+      this.validateCarDetails(
+        updateCarDto.carDetails,
+        updateCarDto.brand,
+        updateCarDto.model,
+        id,
+      );
+    }
 
     const updatedCar = { ...carDB, ...updateCarDto, id };
     const carIndex = this.cars.findIndex((car) => car.id === id);
@@ -49,18 +98,103 @@ export class CarsService {
     return updatedCar;
   }
 
-  fillSeedData(car: Car[]) {
+  /**
+   * Populates the car storage with an array of car objects (used for seeding data).
+   * @param car - The array of car objects to fill the storage.
+   */
+  fillSeedData(car: Car[]): void {
     this.cars = car;
   }
 
-  private ensureNoDuplicate(brand: string, model: string, id?: string): void {
-    const existingCar = this.cars.find(
-      (car) => car.brand === brand && car.model === model && car.id !== id,
-    );
+  /**
+   * Validates the car details including brand, model, license plate, and manufacture year.
+   * @param carDetails - An array of car details to validate.
+   * @param brand - The brand of the car.
+   * @param model - The model of the car.
+   * @param id - (Optional) The ID of the car to exclude from validation checks.
+   * @throws ConflictException if a duplicate car or license plate is found.
+   * @throws BadRequestException if the manufacture year is later than the registration date.
+   */
+  private validateCarDetails(
+    carDetails: CarDetailsDto[],
+    brand: string,
+    model: string,
+    id?: string,
+  ): void {
+    carDetails.forEach((detail) => {
+      this.validateDuplicateCar(brand, model, id);
+      this.validateDuplicateLicensePlate(detail.licensePlate, id);
+      this.validateManufactureYear(
+        detail.manufactureYear,
+        detail.registrationDate,
+        detail.licensePlate,
+      );
+    });
+  }
 
+  /**
+   * Validates if there is already a car with the same brand and model, excluding the current car if ID is provided.
+   * @param brand - The brand of the car.
+   * @param model - The model of the car.
+   * @param id - (Optional) The ID of the car to exclude from the check.
+   * @throws ConflictException if a car with the same brand and model already exists.
+   */
+  private validateDuplicateCar(
+    brand: string,
+    model: string,
+    id?: string,
+  ): void {
+    const existingCar = this.cars.find(
+      (car) => car.id !== id && car.brand === brand && car.model === model,
+    );
     if (existingCar) {
       throw new ConflictException(
         `A car with the same brand (${brand}) and model (${model}) already exists.`,
+      );
+    }
+  }
+
+  /**
+   * Validates if a car with the same license plate already exists, excluding the current car if ID is provided.
+   * @param licensePlate - The license plate to check for duplicates.
+   * @param id - (Optional) The ID of the car to exclude from the check.
+   * @throws ConflictException if a car with the same license plate already exists.
+   */
+  private validateDuplicateLicensePlate(
+    licensePlate: string,
+    id?: string,
+  ): void {
+    const existingCarWithPlate = this.cars.find((car) =>
+      car.carDetails.some(
+        (carDetail) => carDetail.licensePlate === licensePlate && car.id !== id,
+      ),
+    );
+
+    if (existingCarWithPlate) {
+      throw new ConflictException(
+        `A car with the license plate ${licensePlate} already exists.`,
+      );
+    }
+  }
+
+  /**
+   * Validates that the car's manufacture year is not later than the registration date.
+   * @param manufactureYear - The manufacture year of the car.
+   * @param registrationDate - The registration date of the car.
+   * @param licensePlate - The license plate of the car (used for error messages).
+   * @throws BadRequestException if the manufacture year is later than the registration date.
+   */
+  private validateManufactureYear(
+    manufactureYear: number,
+    registrationDate: string,
+    licensePlate: string,
+  ): void {
+    const manufactureDate = new Date(manufactureYear, 0, 1);
+    const regDate = new Date(registrationDate);
+
+    if (manufactureDate > regDate) {
+      throw new BadRequestException(
+        `Manufacture year ${manufactureYear} in the car with license plate ${licensePlate} cannot be later than registration date ${registrationDate}.`,
       );
     }
   }

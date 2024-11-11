@@ -9,24 +9,24 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const allowedOrigins = [
-    'http://localhost:4200', // URL dev Angular
+    'http://localhost:4200', // Angular dev URL
     // 'https://example.com',    // Future prod endpoint
   ];
 
-  // Configuración de Swagger
+  // Swagger configuration
   const config = new DocumentBuilder()
-    .setTitle('API Proyecto Angular CRUD')
-    .setDescription('La API para gestionar los endpoints de cars')
+    .setTitle('Angular CRUD Project API')
+    .setDescription('API for managing car and brand endpoints')
     .setVersion('1.0')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(document));
 
-  // Guardar el archivo Swagger JSON localmente
+  // Save Swagger JSON file locally
   fs.writeFileSync('./swagger.json', JSON.stringify(document, null, 2));
 
-  console.log('El archivo Swagger JSON se ha guardado en swagger.json');
+  console.log('The Swagger JSON file has been saved as swagger.json');
 
   app.enableCors({
     origin: (origin, callback) => {
