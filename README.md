@@ -137,7 +137,6 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
 
 1. Crear una nueva rama `feature/car-details`.
 2. **Pantalla de Detalle**:
-
    - Crear un componente `CarDetailsComponent`.
    - Configurar una ruta dinámica como para leer el id desde la ruta `cars/:id`.
    - Mostrar los datos del coche obtenidos del backend en formato de solo lectura.
@@ -151,24 +150,19 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
    - Cuando se muestre el campo de price usaremos el pipe currency (junto a la propiedad currency).
 
 3. **Pantalla de Creación**:
-
-   - Crear un componente `CarCreateComponent`.
    - Configurar una ruta como `cars/new`.
    - Implementar un formulario reactivo para crear nuevos coches (se necesitará el uso de FormArray para el carDetails).
    - Para las brands y model deberás rellenar la información con sus endpoint correspondientes (recuerda que ambos `select` están relacionados, por lo que deberás controlarlo correctamente)
 
 4. **Pantalla de Edición**:
-
-   - Crear un componente `CarEditComponent`.
    - Configurar una ruta dinámica como `cars/:id/edit`.
    - Usar un formulario reactivo con datos precargados del backend.
 
 5. **Debes tener en cuenta todas las validaciones del backend**:
-
    - manufactureYear debe ser como máximo en el año actual.
    - registrationDate no puede ser anterior a manufactureYear.
    - Respetar el formato de licensePlate.
-   - Respetar los valores posibles de currency.
+   - Respetar los valores posibles de currency (comprobar los posibles valores).
    - No olvides revisar el swagger para comprobar el resto de validaciones.
 
 6. Subir los cambios y abrir una Pull Request.
