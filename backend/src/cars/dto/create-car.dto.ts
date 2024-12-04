@@ -52,7 +52,7 @@ export class CarDetailsDto {
 
   @ApiProperty({
     description: 'Currency of the price',
-    type: String,
+    enum: ISO_CURRENCIES_CODE,
     example: 'USD',
   })
   @IsString()

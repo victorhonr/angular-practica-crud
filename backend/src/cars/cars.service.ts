@@ -120,6 +120,7 @@ export class CarsService {
     model: string,
     id?: string,
   ): void {
+    this.validateDuplicateLicensePlateWithinSelfDetail(carDetails);
     carDetails?.forEach((detail) => {
       this.validateDuplicateCar(brand, model, id);
       this.validateDuplicateLicensePlate(detail.licensePlate, id);
@@ -172,6 +173,25 @@ export class CarsService {
     if (existingCarWithPlate) {
       throw new ConflictException(
         `A car with the license plate ${licensePlate} already exists.`,
+      );
+    }
+  }
+
+  /**
+   * Validates if a car with the same license plate already exists whiting the carDetails object.
+   * @param carDetail - The car details object to check for duplicates.
+   * @throws ConflictException if a car with the same license plate already exists.
+   */
+  private validateDuplicateLicensePlateWithinSelfDetail(
+    carDetail: CarDetailsDto[],
+  ) {
+    const existingCarWithPlate = carDetail.length;
+    const plates = carDetail.map((car) => car.licensePlate);
+    const platesSet = new Set([...plates]);
+    console.log(platesSet);
+    if (existingCarWithPlate !== platesSet.size) {
+      throw new ConflictException(
+        `A car with the license plate already exists.`,
       );
     }
   }
