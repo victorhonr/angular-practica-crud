@@ -10,6 +10,7 @@ async function bootstrap() {
 
   const allowedOrigins = [
     'http://localhost:4200', // Angular dev URL
+    'http://localhost:3000', // Angular dev URL
     // 'https://example.com',    // Future prod endpoint
   ];
 
