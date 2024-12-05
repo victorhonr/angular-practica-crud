@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
-import { BrandsService } from 'src/brands/brands.service';
 import { CarDetailsDto, CreateCarDto } from './dto';
 import { Car, CarSummary } from './entities';
 
@@ -14,8 +13,6 @@ import { Car, CarSummary } from './entities';
 export class CarsService {
   // In-memory storage for cars
   private cars: Car[] = [];
-
-  constructor(private readonly brandsService: BrandsService) {}
 
   /**
    * Retrieves all cars, with the added property 'total' which is the count of carDetails.
@@ -51,22 +48,12 @@ export class CarsService {
   create(createCarDto: CreateCarDto): Car {
     this.validateCarDetails(
       createCarDto.carDetails,
-      createCarDto.brand,
-      createCarDto.model,
+      createCarDto.brand.code,
+      createCarDto.model.code,
     );
-
-    const brand = this.brandsService.brands.find(
-      (brand) => brand.code === createCarDto.brand,
-    );
-    const model = this.brandsService.getModelsByBrand(brand.code);
-    const selectedModel = model.find(
-      (item) => item.code === createCarDto.model,
-    ).value;
 
     const newCar: Car = {
       ...createCarDto,
-      brand: brand.value,
-      model: selectedModel,
       id: uuid(), // Generates a unique ID for the new car
       total: this.cars.length + 1, // Set the total car details
     };
@@ -98,25 +85,15 @@ export class CarsService {
 
     this.validateCarDetails(
       carToUpdate.carDetails,
-      carToUpdate.brand,
-      carToUpdate.model,
+      carToUpdate.brand.code,
+      carToUpdate.model.code,
       id,
     );
-
-    const brand = this.brandsService.brands.find(
-      (brand) => brand.code === carToUpdate.brand,
-    );
-    const model = this.brandsService.getModelsByBrand(brand.code);
-    const selectedModel = model.find(
-      (item) => item.code === carToUpdate.model,
-    ).value;
 
     const updatedCar = {
       ...carDB,
       ...carToUpdate,
       id,
-      model: selectedModel,
-      brand: brand.value,
     };
     const carIndex = this.cars.findIndex((car) => car.id === id);
     this.cars[carIndex] = updatedCar;
@@ -172,7 +149,8 @@ export class CarsService {
     id?: string,
   ): void {
     const existingCar = this.cars.find(
-      (car) => car.id !== id && car.brand === brand && car.model === model,
+      (car) =>
+        car.id !== id && car.brand.code === brand && car.model.code === model,
     );
     if (existingCar) {
       throw new ConflictException(

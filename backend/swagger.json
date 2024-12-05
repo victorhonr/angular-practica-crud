@@ -163,6 +163,25 @@
         ]
       }
     },
+    "/seed": {
+      "get": {
+        "description": "Triggers the seeding of the database with predefined data.",
+        "operationId": "SeedController_populateDB",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Database populated successfully"
+          },
+          "500": {
+            "description": "Error while populating the database"
+          }
+        },
+        "summary": "Populate the database with initial data",
+        "tags": [
+          "seed"
+        ]
+      }
+    },
     "/brands": {
       "get": {
         "operationId": "BrandsController_getAllBrands",
@@ -221,25 +240,6 @@
           "brands"
         ]
       }
-    },
-    "/seed": {
-      "get": {
-        "description": "Triggers the seeding of the database with predefined data.",
-        "operationId": "SeedController_populateDB",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Database populated successfully"
-          },
-          "500": {
-            "description": "Error while populating the database"
-          }
-        },
-        "summary": "Populate the database with initial data",
-        "tags": [
-          "seed"
-        ]
-      }
     }
   },
   "info": {
@@ -252,20 +252,51 @@
   "servers": [],
   "components": {
     "schemas": {
+      "CodeValue": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code",
+            "example": "TOYOTA"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "example": "Toyota"
+          }
+        },
+        "required": [
+          "code",
+          "value"
+        ]
+      },
       "CarSummary": {
         "type": "object",
         "properties": {
           "brand": {
-            "type": "string",
             "description": "Car brand",
-            "maxLength": 50,
-            "example": "Toyota"
+            "example": {
+              "code": "TOYOTA",
+              "value": "Toyota"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CodeValue"
+              }
+            ]
           },
           "model": {
-            "type": "string",
             "description": "Car model",
-            "maxLength": 50,
-            "example": "Corolla"
+            "example": {
+              "code": "COROLLA",
+              "value": "Corolla"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CodeValue"
+              }
+            ]
           },
           "id": {
             "type": "string",
@@ -380,16 +411,28 @@
         "type": "object",
         "properties": {
           "brand": {
-            "type": "string",
             "description": "Car brand",
-            "maxLength": 50,
-            "example": "Toyota"
+            "example": {
+              "code": "TOYOTA",
+              "value": "Toyota"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CodeValue"
+              }
+            ]
           },
           "model": {
-            "type": "string",
             "description": "Car model",
-            "maxLength": 50,
-            "example": "Corolla"
+            "example": {
+              "code": "COROLLA",
+              "value": "Corolla"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CodeValue"
+              }
+            ]
           },
           "carDetails": {
             "description": "Car details",
@@ -419,16 +462,28 @@
         "type": "object",
         "properties": {
           "brand": {
-            "type": "string",
             "description": "Car brand",
-            "maxLength": 50,
-            "example": "Toyota"
+            "example": {
+              "code": "TOYOTA",
+              "value": "Toyota"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CodeValue"
+              }
+            ]
           },
           "model": {
-            "type": "string",
             "description": "Car model",
-            "maxLength": 50,
-            "example": "Corolla"
+            "example": {
+              "code": "COROLLA",
+              "value": "Corolla"
+            },
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CodeValue"
+              }
+            ]
           },
           "carDetails": {
             "description": "Car details",
