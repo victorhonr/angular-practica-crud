@@ -125,8 +125,9 @@ export class CarsService {
     id?: string,
   ): void {
     this.validateDuplicateLicensePlateWithinSelfDetail(carDetails);
+    this.validateDuplicateCar(brand, model, id);
+
     carDetails?.forEach((detail) => {
-      this.validateDuplicateCar(brand, model, id);
       this.validateDuplicateLicensePlate(detail.licensePlate, id);
       this.validateManufactureYear(
         detail.manufactureYear,
@@ -192,7 +193,7 @@ export class CarsService {
     const existingCarWithPlate = carDetail.length;
     const plates = carDetail.map((car) => car.licensePlate);
     const platesSet = new Set([...plates]);
-    console.log(platesSet);
+
     if (existingCarWithPlate !== platesSet.size) {
       throw new ConflictException(
         `A car with the license plate already exists.`,
