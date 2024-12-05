@@ -194,7 +194,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BrandDto"
+                    "type": "string"
                   }
                 }
               }
@@ -228,7 +228,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ModelDto"
+                    "type": "string"
                   }
                 }
               }
@@ -252,51 +252,20 @@
   "servers": [],
   "components": {
     "schemas": {
-      "CodeValue": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "Code",
-            "example": "TOYOTA"
-          },
-          "value": {
-            "type": "string",
-            "description": "Value",
-            "example": "Toyota"
-          }
-        },
-        "required": [
-          "code",
-          "value"
-        ]
-      },
       "CarSummary": {
         "type": "object",
         "properties": {
           "brand": {
+            "type": "string",
             "description": "Car brand",
-            "example": {
-              "code": "TOYOTA",
-              "value": "Toyota"
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CodeValue"
-              }
-            ]
+            "maxLength": 50,
+            "example": "Toyota"
           },
           "model": {
+            "type": "string",
             "description": "Car model",
-            "example": {
-              "code": "COROLLA",
-              "value": "Corolla"
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CodeValue"
-              }
-            ]
+            "maxLength": 50,
+            "example": "Corolla"
           },
           "id": {
             "type": "string",
@@ -411,28 +380,16 @@
         "type": "object",
         "properties": {
           "brand": {
+            "type": "string",
             "description": "Car brand",
-            "example": {
-              "code": "TOYOTA",
-              "value": "Toyota"
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CodeValue"
-              }
-            ]
+            "maxLength": 50,
+            "example": "Toyota"
           },
           "model": {
+            "type": "string",
             "description": "Car model",
-            "example": {
-              "code": "COROLLA",
-              "value": "Corolla"
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CodeValue"
-              }
-            ]
+            "maxLength": 50,
+            "example": "Corolla"
           },
           "carDetails": {
             "description": "Car details",
@@ -462,28 +419,16 @@
         "type": "object",
         "properties": {
           "brand": {
+            "type": "string",
             "description": "Car brand",
-            "example": {
-              "code": "TOYOTA",
-              "value": "Toyota"
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CodeValue"
-              }
-            ]
+            "maxLength": 50,
+            "example": "Toyota"
           },
           "model": {
+            "type": "string",
             "description": "Car model",
-            "example": {
-              "code": "COROLLA",
-              "value": "Corolla"
-            },
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CodeValue"
-              }
-            ]
+            "maxLength": 50,
+            "example": "Corolla"
           },
           "carDetails": {
             "description": "Car details",
@@ -497,44 +442,6 @@
           "brand",
           "model",
           "carDetails"
-        ]
-      },
-      "BrandDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "Car brand code",
-            "example": "TOYOTA"
-          },
-          "value": {
-            "type": "string",
-            "description": "Car brand name",
-            "example": "Toyota"
-          }
-        },
-        "required": [
-          "code",
-          "value"
-        ]
-      },
-      "ModelDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "Car model code",
-            "example": "COROLLA"
-          },
-          "value": {
-            "type": "string",
-            "description": "Car model name",
-            "example": "Corolla"
-          }
-        },
-        "required": [
-          "code",
-          "value"
         ]
       }
     }

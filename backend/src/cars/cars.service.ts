@@ -48,8 +48,8 @@ export class CarsService {
   create(createCarDto: CreateCarDto): Car {
     this.validateCarDetails(
       createCarDto.carDetails,
-      createCarDto.brand.code,
-      createCarDto.model.code,
+      createCarDto.brand,
+      createCarDto.model,
     );
 
     const newCar: Car = {
@@ -85,8 +85,8 @@ export class CarsService {
 
     this.validateCarDetails(
       carToUpdate.carDetails,
-      carToUpdate.brand.code,
-      carToUpdate.model.code,
+      carToUpdate.brand,
+      carToUpdate.model,
       id,
     );
 
@@ -149,8 +149,7 @@ export class CarsService {
     id?: string,
   ): void {
     const existingCar = this.cars.find(
-      (car) =>
-        car.id !== id && car.brand.code === brand && car.model.code === model,
+      (car) => car.id !== id && car.brand === brand && car.model === model,
     );
     if (existingCar) {
       throw new ConflictException(

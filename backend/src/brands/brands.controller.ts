@@ -1,7 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BrandsService } from './brands.service';
-import { BrandDto, ModelDto } from './dto';
 
 @ApiTags('brands') // Tag to group all routes related to brands
 @Controller('brands')
@@ -13,7 +12,7 @@ export class BrandsController {
   @ApiResponse({
     status: 200,
     description: 'List of car brands',
-    type: [BrandDto],
+    type: [String],
   })
   getAllBrands() {
     return this.brandsService.getAllBrands();
@@ -24,7 +23,7 @@ export class BrandsController {
   @ApiResponse({
     status: 200,
     description: 'List of models for the specified brand',
-    type: [ModelDto],
+    type: [String],
   })
   getModelsByBrand(@Param('brandId') brandId: string) {
     return this.brandsService.getModelsByBrand(brandId);

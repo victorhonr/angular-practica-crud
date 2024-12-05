@@ -12,11 +12,11 @@ import {
   IsString,
   Matches,
   Max,
+  MaxLength,
   Min,
   Validate,
   ValidateNested,
 } from 'class-validator';
-import { CodeValue } from 'src/brands/dto';
 import { ISO_CURRENCIES_CODE } from '../data/iso-currencies.data';
 import { IsBeforeConstraint } from '../validators/isBefore.validator';
 import { IsValidYearConstraint } from '../validators/isValidYear.validator';
@@ -113,23 +113,25 @@ export class CarDetailsDto {
 export class CreateCarDto {
   @ApiProperty({
     description: 'Car brand',
-    type: CodeValue,
-    example: { code: 'TOYOTA', value: 'Toyota' },
+    type: String,
+    maxLength: 50,
+    example: 'Toyota',
   })
-  @ValidateNested()
-  @Type(() => CodeValue)
+  @IsString()
+  @MaxLength(50)
   @IsNotEmpty()
-  readonly brand: CodeValue;
+  readonly brand: string;
 
   @ApiProperty({
     description: 'Car model',
-    type: CodeValue,
-    example: { code: 'COROLLA', value: 'Corolla' },
+    type: String,
+    maxLength: 50,
+    example: 'Corolla',
   })
-  @ValidateNested()
-  @Type(() => CodeValue)
+  @IsString()
+  @MaxLength(50)
   @IsNotEmpty()
-  readonly model: CodeValue;
+  readonly model: string;
 
   @ApiProperty({
     description: 'Car details',

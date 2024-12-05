@@ -3,11 +3,8 @@ import { v4 as uuid } from 'uuid';
 
 export const CARS_SEED: Car[] = [
   {
-    brand: {
-      code: 'TOYOTA',
-      value: 'Toyota',
-    },
-    model: { code: 'COROLLA', value: 'Corolla' },
+    brand: 'Toyota',
+    model: 'Corolla',
     total: 2,
     id: uuid(),
     carDetails: [
