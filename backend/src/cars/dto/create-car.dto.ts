@@ -22,6 +22,7 @@ import { IsBeforeConstraint } from '../validators/isBefore.validator';
 import { IsValidYearConstraint } from '../validators/isValidYear.validator';
 
 const licensePlateRegex = /^[0-9]{4}\s?[A-Z]{3}$/;
+const registrationDateRegex = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)$/;
 
 export class CarDetailsDto {
   @ApiProperty({
@@ -34,6 +35,9 @@ export class CarDetailsDto {
     strict: true,
   })
   @IsNotEmpty()
+  @Matches(registrationDateRegex, {
+    message: 'Registration date must be in the format YYYY-MM-DDTHH:MM:SS.mmmZ',
+  })
   @Validate(IsBeforeConstraint)
   @Validate(IsValidYearConstraint, {
     message: 'Car registration year must be greater than or equal to 1900',
