@@ -13,6 +13,7 @@ Asegúrate de tener instalados los siguientes programas en tu sistema:
 - [Node.js](https://nodejs.org) (versión 18 o superior recomendada).
 - [npm](https://www.npmjs.com/) (incluido con Node.js).
 - [Angular CLI](https://angular.dev/tools/cli) (para ejecutar el frontend).
+- Puedes comprobar la compatibilidad de las versiones de Angular [aquí](https://angular.dev/reference/versions)
 
 ```bash
 npm install -g @angular/cli
@@ -82,18 +83,27 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
 1. Hacer un fork del repositorio.
 2. Proteger la rama main para que no se pueda realizar commits directamente, solo a partir de Pull Request.
 3. Crear una rama `feature/initial-project` para configurar los proyectos y lanzar una Pull Request.
-4. Si elegiste Tailwind CSS en el frontend sigue la [guía oficial](https://tailwindcss.com/docs/guides/angular).
-5. Configurar Prettier, ESLint y Husky en el frontend.
+4. Crea una plantilla para realizar las Pull Request (diseño libre).
+5. Si elegiste Tailwind CSS en el frontend sigue la [guía oficial](https://tailwindcss.com/docs/guides/angular).
+6. Configurar Prettier, ESLint y Husky en el frontend.
 
 ---
 
-### **Práctica 2: Crear la Estructura de la Tabla**
+### **Práctica 2 (Opcional): Crear un botón reutilizable**
+
+Deberemos crear una directiva que se usará sobre los botones/links con el objetivo de que mantengan un estilo uniforme sobre toda la aplicación.
+
+Podemos utilizar la directiva de la forma que la usa Angular Material con el componente [button](https://material.angular.io/components/button/overview).
+
+--
+
+### **Práctica 3: Crear la Estructura de la Tabla**
 
 1. Crear una nueva rama `feature/home-page`.
 2. Crear el componente inicial `HomeComponent` y configurarlo como la ruta inicial.
 3. Dentro del `HomeComponent`, crear un componente `CrudTableComponent` con la siguiente estructura:
 
-   > Breadcrumb en la parte superior para manejar la navegación (ver práctica 6).
+   > (Opcional) Breadcrumb en la parte superior para manejar la navegación (ver práctica 6).
 
    - **Botón en la parte superior** dirige a la vista de Creación.
    - **Campo ID**. Tendrá un link que redirige a la vista de detalle.
@@ -101,21 +111,21 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
    - **Campo Modelo**
    - **Campo Total**
    - **Campo Acciones**:
+     <br> Se compone de dos acciones:
 
-     - Utilizar un menu contextual para mostrar las opciones o dos botones.
+     > Editar: Abre una vista con un formulario.
+     > &nbsp;
 
-       > Editar: Abre una vista con un formulario.
-       > &nbsp;
+     > Eliminar: Muestra una ventana modal de confirmación.
 
-       > Eliminar: Muestra una ventana modal de confirmación.
-
+     - (Opcional) Utilizar un menu contextual para mostrar las opciones o dos botones.
        Tienes la opción de utilizar el [Menu](https://material.angular.io/cdk/menu/examples) del cdk de Angular o crear tu propio componente.
 
 4. Subir los cambios y abrir una Pull Request.
 
 ---
 
-### **Práctica 3: Conexión Angular y Nest.js**
+### **Práctica 4: Conexión Angular y Nest.js**
 
 1. Crear una nueva rama `feature/api-integration`.
 2. Configurar en el frontend un servicio Angular (`CarsService`) para manejar las peticiones al backend:
@@ -133,56 +143,56 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
 
 ---
 
-### **Práctica 4: Crear Pantallas de Detalle, Edición y Nuevo Item**
+### **Práctica 5: Crear Pantallas de Detalle, Edición y Nuevo Item**
 
 1. Crear una nueva rama `feature/car-details`.
 2. **Pantalla de Detalle**:
+
    - Crear un componente `CarDetailsComponent`.
    - Configurar una ruta dinámica como para leer el id desde la ruta `cars/:id`.
    - Mostrar los datos del coche obtenidos del backend en formato de solo lectura.
    - Cuando se muestre el campo mileage usaremos un pipe para ver 2 decimales.
-   - Crear un pipe personalizado, para, y junto al campo de mileage controlaremos 3 estados: Nuevo / Kilómetro 0 / Ocasión.
+   - Crear un pipe personalizado, y junto al campo de mileage controlaremos 3 estados: Nuevo / Kilómetro 0 / Ocasión.
 
      - Si el mileage es 0, mostraremos un tag verde que ponga "Nuevo"
      - Si es mileage menor a 100km, mostraremos un tag azul que ponga "Km 0"
      - El resto, mostraremos un tag amarillo que ponga "Ocasión"
 
-   - Cuando se muestre el campo de price usaremos el pipe currency (junto a la propiedad currency).
+   - Cuando se muestre el campo de price usaremos el pipe currency.
 
 3. **Pantalla de Creación**:
+
    - Configurar una ruta como `cars/new`.
    - Implementar un formulario reactivo para crear nuevos coches (se necesitará el uso de FormArray para el carDetails).
    - Para las brands y model deberás rellenar la información con sus endpoint correspondientes (recuerda que ambos `select` están relacionados, por lo que deberás controlarlo correctamente)
 
 4. **Pantalla de Edición**:
+
    - Configurar una ruta dinámica como `cars/:id/edit`.
-   - Usar un formulario reactivo con datos precargados del backend.
+   - Usar el formulario reactivo con datos precargados del backend.
 
 5. **Debes tener en cuenta todas las validaciones del backend**:
-   - manufactureYear debe ser como máximo en el año actual.
+
+   - manufactureYear debe ser como máximo en el año actual y como mínimo el año 1900.
    - registrationDate no puede ser anterior a manufactureYear.
    - Respetar el formato de licensePlate.
-   - Respetar los valores posibles de currency (comprobar los posibles valores).
-   - No olvides revisar el swagger para comprobar el resto de validaciones.
+   - Respetar los valores posibles de currency (comprobar los valores en el swagger).
+   - No olvides revisar el swagger para comprobar el resto de validaciones (requeridos, valores máximos, etc.).
 
 6. Subir los cambios y abrir una Pull Request.
 
 ---
 
-### **Práctica 5: Implementar Funcionalidad de Eliminar con Modal**
+### **Práctica 6: Implementar Funcionalidad de Eliminar con Modal**
 
 1. Crear una nueva rama `feature/delete-car`.
 2. Crear un componente modal reutilizable (o utilizar el [Dialog](https://material.angular.io/cdk/dialog/overview) del cdk de Angular) que reciba:
-   - Título.
-   - Mensaje.
-   - Acciones de confirmación/cancelación.
 3. Conectar el modal a los botones "Eliminar" en la tabla.
-4. Manejar errores al eliminar y mostrar un toast de error en caso de fallo.
-5. Subir los cambios y abrir una Pull Request.
+4. Subir los cambios y abrir una Pull Request.
 
 ---
 
-### **Práctica 6: Implementar breadcrumb para la navegación**
+### **Práctica 7 (Opcional): Implementar breadcrumb para la navegación**
 
 1. Crear una nueva rama `feature/breadcrumb`.
 2. Crear un componente breadcrumb que reciba:
@@ -191,34 +201,35 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
 3. Manejar la funcionalidad de la navegación.
 4. Subir los cambios y abrir una Pull Request.
 
+<strong style="color: yellow"> Si decides no utilizar un breadcrumb deberás manejar la navegación para volver a la tabla desde el detalle de la forma que veas mas adecuada. </strong>
+
 ---
 
-### **Práctica 7: Manejo de Errores y Mensajes**
+### **Práctica 8: Manejo de Errores y Mensajes**
 
 1. Crear una nueva rama `feature/error-handling`.
 2. Crear un servicio Angular para mostrar notificaciones (toasts):
    - Definir métodos para mostrar mensajes de éxito, error e información.
-3. Manejar errores en todas las operaciones de los servicio.
+3. Manejar errores en todas las operaciones de los servicio (siéntete libre de utilizar la estrategia que veas más correcta y escalable).
 4. Mostrar toasts con mensajes claros para cada tipo de error.
 5. Subir los cambios y abrir una Pull Request.
 
 ---
 
----
+### **Práctica 9: Loaders**
 
-### **Práctica 8: Loaders**
-
-1. Crear una nueva rama `feature/loader-interceptor`.
+1. Crear una nueva rama `feature/loader`.
 2. Crear un componente loader (diseño libre):
 3. Manejar la implementación y ver la mejor forma de utilizarlo (como si fuera un overlay, en cada componente ...).
-4. Subir los cambios y abrir una Pull Request.
+4. (Opcional): Puedes realizarlo a traves de un interceptor
+5. Subir los cambios y abrir una Pull Request.
 
 ---
 
-### **Práctica 9: Finalización y Documentación**
+### **Práctica 10: Finalización y Documentación**
 
 1. Crear una nueva rama `feature/documentation`.
-2. Crear un archivo `CONTRIBUTING.md` con normas de contribución:
+2. Crear un archivo `CONTRIBUTING.md` con normas de contribución (puedes investigar proyectos públicos para organizarte):
    - Flujo de trabajo GitFlow.
    - Convenciones de commits (feat, fix, refactor, etc.).
    - Proceso de revisión de código (Pull Requests).
@@ -228,10 +239,12 @@ Desarrollar una aplicación web utilizando **Angular** con funcionalidades CRUD 
 
 ### Todos los nombres de componentes, métodos, variables, etc. deberán estar en ingles.
 
-### Si lo consideras necesario, puedes instalar el CDK de Angular para la utilización de los modales y el menú contextual.
+### Documenta todo lo que que consideres necesario y aporte valor (evita describir lo que hace el código línea a línea. Busca que sea un código auto explicativo).
 
-### Se trata de un proyecto en versión 19, por lo que se valorará la elección de las últimas funcionalidades (nuevo template flow, signals, etc).
+### Recomendable instalar el CDK de Angular para la utilización de los modales y el menú contextual.
 
-### Es requisito obligatorio un 80% de code coverage en el proyecto para poder entregarlo.
+### Se trata de un proyecto en versión 19, por lo que se valorará la elección de las últimas funcionalidades (standalone components, nuevo template flow, signals, etc) pero no es requisito obligatorio.
+
+### BONUS un 80% de code coverage.
 
 ### Recomendamos seguir el [coding style guide](https://angular.dev/style-guide) propuesto por Angular para el desarrollo de este proyecto.
