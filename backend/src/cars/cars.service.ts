@@ -12,7 +12,25 @@ import { Car, CarSummary } from './entities';
 @Injectable()
 export class CarsService {
   // In-memory storage for cars
-  private cars: Car[] = [];
+  private cars: Car[] = [
+    {
+      brand: 'Toyota',
+      model: 'Corolla',
+      id: uuid(),
+      total: 1,
+      carDetails: [
+        {
+          availability: true,
+          currency: 'USD',
+          licensePlate: '1111 AAA',
+          manufactureYear: new Date().getFullYear(),
+          mileage: 30_000,
+          price: 25_000,
+          registrationDate: new Date().toISOString(),
+        },
+      ],
+    },
+  ];
 
   /**
    * Retrieves all cars, with the added property 'total' which is the count of carDetails.
