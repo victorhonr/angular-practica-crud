@@ -127,30 +127,58 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
 ### **Práctica 4: Conexión Angular y Nest.js**
 
-1. Crear una nueva rama `feature/api-integration`.
-2. Configurar en el frontend un servicio Angular (`CarsService`) para manejar las peticiones al backend:
+Para que la API funcione correctamente, es necesario almacenar en el `localStorage` un token de autenticación (ya que no vamos a desarrollar un login, porque se sale del objetivo de la práctica).  
+Este token debe utilizarse en cada petición como un **Bearer Token** en la cabecera `Authorization`.
+
+### **Instrucciones:**
+
+1. Abre la consola del navegador (`F12`) y accede a la pestaña **Application**.
+2. En la sección **Local Storage**, selecciona el dominio de la aplicación.
+3. Añade una nueva clave con el siguiente formato:
+
+   - **Clave:** `auth-token`
+   - **Valor:** `"mock-token"`
+
+   También puedes hacerlo mediante la consola ejecutando:
+
+   ```javascript
+   localStorage.setItem("auth-token", "mock-token");
+   ```
+
+4. Crear una nueva rama `feature/api-integration`.
+5. Configurar en el frontend un servicio Angular (`CarsService`) para manejar las peticiones al backend:
    - `getCars`: Llama al endpoint `GET /cars`.
    - `getCarById`: Llama al endpoint `GET /cars/:id`.
    - `createCar`: Llama al endpoint `POST /cars`.
    - `updateCar`: Llama al endpoint `PUT /cars/:id`.
    - `deleteCar`: Llama al endpoint `DELETE /cars/:id`.
-3. Configurar en el frontend un servicio Angular (`BrandsService`) para manejar las peticiones al backend:
+6. Configurar en el frontend un servicio Angular (`BrandsService`) para manejar las peticiones al backend:
    - `getBrands`: Llama al endpoint `GET /brands`.
    - `getModelByBrand`: Llama al endpoint `GET /brands/:brandId/models`.
-4. Actualizar el componente `CrudTableComponent` para obtener los datos de los servicios y mostrarlos en la tabla.
-5. Ten en cuenta el [swagger](http://localhost:3000/api-docs/) que tenemos a la hora de validar los datos antes de enviarlo al backend.
-6. Subir los cambios y abrir una Pull Request.
+7. Actualizar el componente `CrudTableComponent` para obtener los datos de los servicios y mostrarlos en la tabla.
+8. Ten en cuenta el [swagger](http://localhost:3000/api-docs/) que tenemos a la hora de validar los datos antes de enviarlo al backend.
+9. Subir los cambios y abrir una Pull Request.
 
 ---
 
-### **Práctica 5: Crear Pantallas de Detalle, Edición y Nuevo Item**
+### **Práctica 5: Crear HTTP Interceptor**
+
+#### **Requisitos previos**
+
+Antes de comenzar, asegúrate de haber completado la **Práctica 4** y de que el token de autenticación está almacenado en el `localStorage`.
+
+Implementa un interceptor para añadir el token en cada petición realizada al backend.
+
+---
+
+### **Práctica 6: Crear Pantallas de Detalle, Edición y Nuevo Item**
 
 1. Crear una nueva rama `feature/car-details`.
 2. **Pantalla de Detalle**:
 
    - Crear un componente `CarDetailsComponent`.
    - Configurar una ruta dinámica como para leer el id desde la ruta `cars/:id`.
-   - Mostrar los datos del coche obtenidos del backend en formato de solo lectura.
+   - Mostrar los datos del coche obtenidos del backend.
    - Cuando se muestre el campo mileage usaremos un pipe para ver 2 decimales.
    - Crear un pipe personalizado, y junto al campo de mileage controlaremos 3 estados: Nuevo / Kilómetro 0 / Ocasión.
 
@@ -160,30 +188,40 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
    - Cuando se muestre el campo de price usaremos el pipe currency.
 
-3. **Pantalla de Creación**:
+---
+
+### **Práctica 7: Crear Pantalla Nuevo Item**
+
+1. Crear una nueva rama `feature/car-new`.
+2. **Pantalla de Creación**:
 
    - Configurar una ruta como `cars/new`.
    - Implementar un formulario reactivo para crear nuevos coches (se necesitará el uso de FormArray para el carDetails).
    - Para las brands y model deberás rellenar la información con sus endpoint correspondientes (recuerda que ambos `select` están relacionados, por lo que deberás controlarlo correctamente)
 
-4. **Pantalla de Edición**:
+---
 
+### **Práctica 8: Crear Pantalla Edit Item**
+
+1. Crear una nueva rama `feature/car-edit`.
+2. **Pantalla de Edición**:
    - Configurar una ruta dinámica como `cars/:id/edit`.
    - Usar el formulario reactivo con datos precargados del backend.
-
-5. **Debes tener en cuenta todas las validaciones del backend**:
-
-   - manufactureYear debe ser como máximo en el año actual y como mínimo el año 1900.
-   - registrationDate no puede ser anterior a manufactureYear.
-   - Respetar el formato de licensePlate.
-   - Respetar los valores posibles de currency (comprobar los valores en el swagger).
-   - No olvides revisar el swagger para comprobar el resto de validaciones (requeridos, valores máximos, etc.).
-
-6. Subir los cambios y abrir una Pull Request.
+   - Recuerda que debe funcionar igual que la creación.
 
 ---
 
-### **Práctica 6: Implementar Funcionalidad de Eliminar con Modal**
+<h1 style="color: red;">**Debes tener en cuenta todas las validaciones del backend**:</h1>
+
+- manufactureYear debe ser como máximo en el año actual y como mínimo el año 1900.
+- registrationDate no puede ser anterior a manufactureYear.
+- Respetar el formato de licensePlate.
+- Respetar los valores posibles de currency (comprobar los valores en el swagger).
+- No olvides revisar el swagger para comprobar el resto de validaciones (requeridos, valores máximos, etc.).
+
+---
+
+### **Práctica 9: Implementar Funcionalidad de Eliminar con Modal**
 
 1. Crear una nueva rama `feature/delete-car`.
 2. Crear un componente modal reutilizable (o utilizar el [Dialog](https://material.angular.io/cdk/dialog/overview) del cdk de Angular) que reciba:
@@ -192,7 +230,7 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
 ---
 
-### **Práctica 7 (Opcional): Implementar breadcrumb para la navegación**
+### **Práctica 10 (Opcional): Implementar breadcrumb para la navegación**
 
 1. Crear una nueva rama `feature/breadcrumb`.
 2. Crear un componente breadcrumb que reciba:
@@ -205,7 +243,7 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
 ---
 
-### **Práctica 8: Manejo de Errores y Mensajes**
+### **Práctica 11: Manejo de Errores y Mensajes**
 
 1. Crear una nueva rama `feature/error-handling`.
 2. Crear un servicio Angular para mostrar notificaciones (toasts):
@@ -216,7 +254,7 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
 ---
 
-### **Práctica 9: Loaders**
+### **Práctica 12: Loaders**
 
 1. Crear una nueva rama `feature/loader`.
 2. Crear un componente loader (diseño libre):
@@ -226,7 +264,7 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
 ---
 
-### **Práctica 10: Finalización y Documentación**
+### **Práctica 13: Finalización y Documentación**
 
 1. Crear una nueva rama `feature/documentation`.
 2. Crear un archivo `CONTRIBUTING.md` con normas de contribución (puedes investigar proyectos públicos para organizarte):
@@ -245,6 +283,6 @@ Podemos utilizar la directiva de la forma que la usa Angular Material con el com
 
 ### Se trata de un proyecto en versión 19, por lo que se valorará la elección de las últimas funcionalidades (standalone components, nuevo template flow, signals, etc) pero no es requisito obligatorio.
 
-### BONUS un 80% de code coverage.
+### BONUS: Conseguir un 80% de code coverage.
 
 ### Recomendamos seguir el [coding style guide](https://angular.dev/style-guide) propuesto por Angular para el desarrollo de este proyecto.

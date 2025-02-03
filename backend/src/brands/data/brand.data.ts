@@ -62,7 +62,7 @@ export const modelsDB: {
     'i8',
     'Z4',
   ],
-  MERCEDES: [
+  ['MERCEDES-BENZ']: [
     'C Class',
     'E Class',
     'S Class',

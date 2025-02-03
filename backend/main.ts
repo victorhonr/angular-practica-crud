@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
+import { AuthGuard } from 'src/guards/auth.guard';
 import * as swaggerUi from 'swagger-ui-express';
 import { AppModule } from './src/app.module';
 
@@ -19,9 +20,20 @@ async function bootstrap() {
     .setTitle('Angular CRUD Project API')
     .setDescription('API for managing car and brand endpoints')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
+  document.components = document.components || {};
+  document.components.securitySchemes = {
+    bearer: {
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+    },
+  };
+  document.security = [{ bearer: [] }];
+
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(document));
 
   // Save Swagger JSON file locally
@@ -40,6 +52,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
+
+  app.useGlobalGuards(new AuthGuard());
 
   app.useGlobalPipes(
     new ValidationPipe({
