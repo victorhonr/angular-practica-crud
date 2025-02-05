@@ -95,7 +95,7 @@ Deberemos crear una directiva que se usará sobre los botones/links con el objet
 
 Podemos utilizar la directiva de la forma que la usa Angular Material con el componente [button](https://material.angular.io/components/button/overview).
 
---
+---
 
 ### **Práctica 3: Crear la Estructura de la Tabla**
 
@@ -171,7 +171,7 @@ Implementa un interceptor para añadir el token en cada petición realizada al b
 
 ---
 
-### **Práctica 6: Crear Pantallas de Detalle, Edición y Nuevo Item**
+### **Práctica 6: Crear Pantalla de Detalle**
 
 1. Crear una nueva rama `feature/car-details`.
 2. **Pantalla de Detalle**:
