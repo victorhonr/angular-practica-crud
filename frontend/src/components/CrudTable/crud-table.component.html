@@ -3,7 +3,7 @@
         @for(item of ['Crear','ID','Marca','Modelo','Total','Acciones'];track item){
             <th>
                 @if(item === 'Crear'){
-                <button-component [insideText]="'Crear'"/>    
+                <button-component [insideText]="'Crear'" [onClick]="handleCrear"/>    
             }
             @else {
                 {{item}}
