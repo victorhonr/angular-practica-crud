@@ -1,12 +1,12 @@
-##Description
+## Description
 Please provide a summary of your changes.
 
-#Changes
+# Changes
 - [ ] Feature added
 - [ ] Bug fix
 - [ ] Refactoring
 
-#Checklist
+# Checklist
 - [ ] Code follows coding standards
 - [ ] Test have been updated
 - [ ] Docs have been updated
