@@ -7,9 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() insideText: string = 'Botón';
-  @Input() onClick: Function = ()=>{}
+  @Input() onClick = (): void => {};
 
-  handleClick(){
-    this.onClick()
+  handleClick() {
+    this.onClick();
   }
 }

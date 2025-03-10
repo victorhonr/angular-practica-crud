@@ -1,5 +1,5 @@
 export class BrandService {
-    public getBrands(){}
+  public getBrands() {}
 
-    public getModelByBrand(){}
+  public getModelByBrand() {}
 }
