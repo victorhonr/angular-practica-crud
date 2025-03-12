@@ -5,8 +5,8 @@
         }
     </tr>
      @for(item of carList;track item){
-        <tr>@for(field of fields; track field){
-            <td>{{item[field.value]}}</td>
+        <tr (click)="handleClick(item.id)">@for(field of fields; track field){
+            <td >{{item[field.value]}}</td>
         }</tr>
      }
 </table>

@@ -24,8 +24,10 @@ export class CrudTableComponent {
     });
   }
 
-  ngOnChanges() {
-    console.log(this.carList);
+  handleClick(id: string): void {
+    this.carService
+      .getCarById(id)
+      .subscribe((res) => console.log('getCarById', id, res));
   }
 
   handleCrear(): void {

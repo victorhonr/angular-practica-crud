@@ -10,19 +10,41 @@ export class CarService {
 
   headers = { Authorization: 'Bearer mock-token' };
 
+  private uri = 'http://localhost:3000/cars/';
+
   public getCars(): Observable<object> {
-    return this.http.get('http://localhost:3000/cars', {
+    return this.http.get(this.uri, {
       headers: {
         Authorization: 'Bearer mock-token',
       },
     });
   }
 
-  public getCarById() {}
+  public getCarById(id: string): Observable<object> {
+    return this.http.get(this.uri.concat(id), {
+      headers: {
+        Authorization: 'Bearer mock-token',
+      },
+    });
+  }
 
-  public createCar() {}
+  public createCar(car: object): Observable<object> {
+    return this.http.post(this.uri, {
+      body: car,
+      headers: { Authorization: 'Bearer mock-token' },
+    });
+  }
 
-  public updateCar() {}
+  public updateCar(id: string, car: object): Observable<object> {
+    return this.http.put(this.uri.concat(id), {
+      body: car,
+      headers: { Authorization: 'Bearer mock-token' },
+    });
+  }
 
-  public deleteCar() {}
+  public deleteCar(id: string) {
+    return this.http.delete(this.uri.concat(id), {
+      headers: { Authorization: 'Bearer mock-token' },
+    });
+  }
 }
